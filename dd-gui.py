@@ -1,7 +1,7 @@
 #!/usr/bin/env python3
 
 # import modules
-import os, os.path, sys, shutil
+import os, os.path, sys, shutil, pathlib
 try:
     from PyQt5.QtCore import *
     from PyQt5.QtGui import *
@@ -17,6 +17,12 @@ try:
     DD_PATH = sys.argv[1]
 except:
     DD_PATH = "dd"
+
+# xzcat path
+try:
+    XZCAT_PATH = sys.argv[2]
+except:
+    XZCAT_PATH = "xzcat"
 
 def browse_if():
     global IF_ISO
@@ -57,7 +63,11 @@ def write_start():
     else:
         WRITE_CONV = ""
     
-    EXEC_CMD = f"{DD_PATH} if='{INPUT_IF.text()}' of='{INPUT_OF.text()}' {WRITE_BS} {WRITE_COUNT} {WRITE_SKIP} {WRITE_CONV}"
+    if pathlib.Path(INPUT_IF.text()).suffix == ".xz":
+        EXEC_CMD = f"{XZCAT_PATH} '{INPUT_IF.text()}' | {DD_PATH} of='{INPUT_OF.text()}' {WRITE_BS} {WRITE_COUNT} {WRITE_SKIP} {WRITE_CONV}"
+    else:
+        EXEC_CMD = f"{DD_PATH} if='{INPUT_IF.text()}' of='{INPUT_OF.text()}' {WRITE_BS} {WRITE_COUNT} {WRITE_SKIP} {WRITE_CONV}"
+    
     print(f"Command to be executed: {EXEC_CMD}")
     
     STATUS = "writing..."
@@ -74,7 +84,7 @@ def main():
     
     WIDTH = 500
     HEIGHT = 200
-    CAPTION = "dd-gui v0.2"
+    CAPTION = "dd-gui v0.3"
     STATUS = "idle"
     
     WINDOW = QWidget()
