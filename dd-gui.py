@@ -60,16 +60,21 @@ def write_start():
     EXEC_CMD = f"{DD_PATH} if='{INPUT_IF.text()}' of='{INPUT_OF.text()}' {WRITE_BS} {WRITE_COUNT} {WRITE_SKIP} {WRITE_CONV}"
     print(f"Command to be executed: {EXEC_CMD}")
     
+    STATUS = "writing..."
+    TEXT_STATUS.setText(f"Status: {STATUS}")
     os.system(EXEC_CMD)
+
+    STATUS = "idle"
+    TEXT_STATUS.setText(f"Status: {STATUS}")
 
 def main():
     app = QApplication(sys.argv)
     
-    global WINDOW, WIDTH, HEIGHT, CAPTION, INPUT_IF, INPUT_OF, STATUS, CB_BS, CB_COUNT, CB_SKIP, TEXT_CONV, INPUT_BS, INPUT_COUNT, INPUT_SKIP, DRP_CONV
+    global WINDOW, WIDTH, HEIGHT, CAPTION, INPUT_IF, INPUT_OF, STATUS, CB_BS, CB_COUNT, CB_SKIP, TEXT_CONV, INPUT_BS, INPUT_COUNT, INPUT_SKIP, DRP_CONV, TEXT_STATUS
     
     WIDTH = 500
     HEIGHT = 200
-    CAPTION = "dd-gui v0.1"
+    CAPTION = "dd-gui v0.2"
     STATUS = "idle"
     
     WINDOW = QWidget()
